@@ -12,7 +12,7 @@ describe('useCharts', () => {
         await waitFor(() =>
             expect(result.current.charts).toStrictEqual([
                 'Nova ficha',
-                'Nova ficha',
+                'Nova ficha1',
             ]),
         );
     });
@@ -37,7 +37,7 @@ describe('useCharts', () => {
                         series: 0,
                     },
                     {
-                        id: 'Novo exercício',
+                        id: 'Novo exercício1',
                         pr: 0,
                         reps: 0,
                         series: 0,

@@ -34,6 +34,7 @@ const chartsReducer = (state: ChartsState, action: Action) => {
             return {
                 ...state,
                 charts: [...state.charts, action.newChart] as Chart[],
+                selected: action.newChart.id,
             };
         case ActionsType.REMOVE_CHART:
             if (!action.chartId)
@@ -123,14 +124,31 @@ export const ChartsProvider = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
+const getUniqueId = (initialId: string, list?: string[]) => {
+    let newId = initialId;
+    let index = 1;
+    while (!list || list.find(id => id === newId)) {
+        newId = `${initialId}${index}`;
+        index++;
+    }
+    return newId;
+};
+
 export const useCharts = () => {
     const context = useContext(ChartsContext);
     if (!context) throw Error('ChartsContext is not acessible here');
     const { state, dispatch } = context;
 
+    const charts = useMemo(
+        () => state.charts.map(({ id }) => id),
+        [state.charts],
+    );
+    const currentChart = state.charts.find(({ id }) => id === state.selected);
+
     const addChart = () => {
+        const newChartId = getUniqueId('Nova ficha', charts);
         const newChart: Chart = {
-            id: 'Nova ficha',
+            id: newChartId,
             exercises: [] as Exercise[],
         };
         dispatch({
@@ -147,8 +165,12 @@ export const useCharts = () => {
     };
 
     const addExercise = (chartId: string) => {
+        const newExerciseId = getUniqueId(
+            'Novo exercício',
+            currentChart?.exercises.map(({ id }) => id),
+        );
         const newExercise: Exercise = {
-            id: 'Novo exercício',
+            id: newExerciseId,
             series: 0,
             reps: 0,
             pr: 0,
@@ -174,11 +196,6 @@ export const useCharts = () => {
             chartId,
         });
     };
-
-    const charts = useMemo(
-        () => state.charts.map(({ id }) => id),
-        [state.charts],
-    );
 
     return {
         charts,
