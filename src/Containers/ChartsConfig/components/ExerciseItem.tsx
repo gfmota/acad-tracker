@@ -1,6 +1,10 @@
 import { Exercise } from '../types';
 import useExerciseItem from '../hooks/useExerciseItem';
 import styles from './styles/ExerciseItem.module.scss';
+import TrashIcon from '../../../Components/Icons/TrashIcon';
+import EditIcon from '../../../Components/Icons/EditIcon';
+import CancelIcon from '../../../Components/Icons/CancelIcon';
+import SaveIcon from '../../../Components/Icons/SaveIcon';
 
 interface ExerciseItemProps {
     exercise: Exercise;
@@ -36,8 +40,12 @@ const ExerciseItem = ({
                     />
                 </div>
                 <div>
-                    <button onClick={toggleEdit}>Cancelar</button>
-                    <button type="submit">Salvar</button>
+                    <button className={styles.iconButton} type="submit">
+                        <SaveIcon color="#3454b3" size="24" />
+                    </button>
+                    <button className={styles.iconButton} onClick={toggleEdit}>
+                        <CancelIcon color="red" size="24" />
+                    </button>
                 </div>
             </div>
         </form>
@@ -49,8 +57,12 @@ const ExerciseItem = ({
                     {series}x{reps}
                 </div>
                 <div>
-                    <button onClick={toggleEdit}>Editar</button>
-                    <button onClick={remove}>-</button>
+                    <button className={styles.iconButton} onClick={toggleEdit}>
+                        <EditIcon color="#3454b3" size="24" />
+                    </button>
+                    <button className={styles.iconButton} onClick={remove}>
+                        <TrashIcon color="red" size="24" />
+                    </button>
                 </div>
             </div>
         </div>

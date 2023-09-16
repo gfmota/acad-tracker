@@ -25,7 +25,7 @@ describe('EditChart', () => {
 
     it('should call addChart correctly', () => {
         render(<EditChart />);
-        fireEvent.click(screen.getByText('+'));
+        fireEvent.click(screen.getByTestId('add-icon'));
 
         expect(addExerciseToCurrentChart).toBeCalled();
     });

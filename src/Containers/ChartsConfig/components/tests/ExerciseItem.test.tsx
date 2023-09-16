@@ -27,14 +27,14 @@ describe('ExerciseItem', () => {
 
         it('should call toggleEdit correctly', () => {
             render(<ExerciseItem exercise={EXERCISES_MOCK[0]} />);
-            fireEvent.click(screen.getByText('Editar'));
+            fireEvent.click(screen.getByTestId('edit-icon'));
 
             expect(toggleEdit).toBeCalled();
         });
 
         it('should call remove correctly', () => {
             render(<ExerciseItem exercise={EXERCISES_MOCK[0]} />);
-            fireEvent.click(screen.getByText('-'));
+            fireEvent.click(screen.getByTestId('trash-icon'));
 
             expect(remove).toBeCalled();
         });
@@ -52,14 +52,14 @@ describe('ExerciseItem', () => {
 
         it('should call toggleEdit correctly', () => {
             render(<ExerciseItem exercise={EXERCISES_MOCK[0]} />);
-            fireEvent.click(screen.getByText('Cancelar'));
+            fireEvent.click(screen.getByTestId('cancel-icon'));
 
             expect(toggleEdit).toBeCalled();
         });
 
         it('should call update correctly', () => {
             render(<ExerciseItem exercise={EXERCISES_MOCK[0]} />);
-            fireEvent.click(screen.getByText('Salvar'));
+            fireEvent.click(screen.getByTestId('save-icon'));
 
             expect(update).toBeCalled();
         });

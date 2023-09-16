@@ -19,12 +19,12 @@ describe('ChartsTabs', () => {
         expect(screen.getByText('A')).toBeInTheDocument();
         expect(screen.getByText('B')).toBeInTheDocument();
         expect(screen.getByText('C')).toBeInTheDocument();
-        expect(screen.getByText('+')).toBeInTheDocument();
+        expect(screen.getByTestId('add-icon')).toBeInTheDocument();
     });
 
     it('should call addChart correctly', () => {
         render(<ChartsTabs />);
-        fireEvent.click(screen.getByText('+'));
+        fireEvent.click(screen.getByTestId('add-icon'));
 
         expect(addChart).toBeCalled();
     });
