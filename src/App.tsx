@@ -1,9 +1,5 @@
 function App() {
-  return (
-    <div className="App">
-      Sou um app feito com bun
-    </div>
-  );
+    return <div className="App">Sou um app feito com bun</div>
 }
 
-export default App;
+export default App
