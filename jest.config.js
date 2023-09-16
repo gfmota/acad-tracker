@@ -8,7 +8,7 @@ module.exports = {
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     modulePaths: ['.'],
     moduleNameMapper: {
-        '^.+\\.(css|less|scss|sass)$': '<rootDir>/tests/mock.ts',
+        '^.+\\.(css|less|scss|sass)$': '<rootDir>/mock.ts',
     },
     testEnvironment: 'jest-environment-jsdom',
     coverageThreshold: {
@@ -19,4 +19,4 @@ module.exports = {
             statements: -10,
         },
     },
-}
+};
