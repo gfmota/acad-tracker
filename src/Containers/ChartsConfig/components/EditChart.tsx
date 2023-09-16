@@ -1,21 +1,16 @@
-import { useCharts } from '../context';
+import useEditChart from '../hooks/useEditChart';
+import ExerciseItem from './ExerciseItem';
 
 const EditChart = () => {
-    const { currentChart, addExercise, removeExercise } = useCharts();
+    const { exercises, addExerciseToCurrentChart } = useEditChart();
+
     return (
-        currentChart && (
+        exercises && (
             <div>
-                {currentChart.exercises.map(({ id, pr, series, reps }) => (
-                    <div key={id}>
-                        {id} {series}x{reps} PR: {pr} <button>Editar</button>
-                        <button
-                            onClick={() => removeExercise(currentChart.id, id)}
-                        >
-                            -
-                        </button>
-                    </div>
+                {exercises.map(exercise => (
+                    <ExerciseItem key={exercise.id} exercise={exercise} />
                 ))}
-                <button onClick={() => addExercise(currentChart.id)}>+</button>
+                <button onClick={addExerciseToCurrentChart}>+</button>
             </div>
         )
     );

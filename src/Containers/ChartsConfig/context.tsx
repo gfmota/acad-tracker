@@ -1,23 +1,24 @@
-import React, { useContext, useMemo, useReducer } from 'react';
+import React, { useContext, useReducer } from 'react';
 import { Chart, Exercise } from './types';
 
 interface ChartsState {
     charts: Chart[];
-    selected: string;
+    selected: number;
 }
 enum ActionsType {
     ADD_CHART = 'add_chart',
     REMOVE_CHART = 'remove_chart',
     ADD_EXERCISE = 'add_exercise',
     REMOVE_EXERCISE = 'remove_exercise',
+    UPDATE_EXERCISE = 'update_exercise',
     SELECT_CHART = 'select_chart',
 }
 interface Action {
     type: ActionsType;
-    chartId?: string;
-    exerciseId?: string;
+    chartId?: number;
+    exerciseId?: number;
     newChart?: Chart;
-    newExercise?: Exercise;
+    exercise?: Exercise;
 }
 
 const ChartsContext = React.createContext<
@@ -37,7 +38,7 @@ const chartsReducer = (state: ChartsState, action: Action) => {
                 selected: action.newChart.id,
             };
         case ActionsType.REMOVE_CHART:
-            if (!action.chartId)
+            if (action.chartId === undefined)
                 throw Error(
                     'chartId must be defined to ChartsContext.REMOVE_CHART',
                 );
@@ -48,9 +49,9 @@ const chartsReducer = (state: ChartsState, action: Action) => {
                 ) as Chart[],
             };
         case ActionsType.ADD_EXERCISE:
-            if (!action.newExercise || !action.chartId)
+            if (!action.exercise || action.chartId === undefined)
                 throw Error(
-                    'newExercise and chartId must be defined to ChartsContext.ADD_EXERCISE',
+                    'exercise and chartId must be defined to ChartsContext.ADD_EXERCISE',
                 );
             return {
                 ...state,
@@ -58,16 +59,13 @@ const chartsReducer = (state: ChartsState, action: Action) => {
                     chart.id === action.chartId
                         ? {
                               ...chart,
-                              exercises: [
-                                  ...chart.exercises,
-                                  action.newExercise,
-                              ],
+                              exercises: [...chart.exercises, action.exercise],
                           }
                         : chart,
                 ) as Chart[],
             };
         case ActionsType.REMOVE_EXERCISE:
-            if (!action.exerciseId || !action.chartId)
+            if (action.exerciseId === undefined || action.chartId === undefined)
                 throw Error(
                     'exerciseId and chartId must be defined to ChartsContext.REMOVE_EXERCISE',
                 );
@@ -84,8 +82,32 @@ const chartsReducer = (state: ChartsState, action: Action) => {
                         : chart,
                 ) as Chart[],
             };
+        case ActionsType.UPDATE_EXERCISE:
+            if (
+                action.chartId === undefined ||
+                action.exerciseId === undefined ||
+                !action.exercise
+            )
+                throw Error(
+                    'chartId, exerciseId and exercise must be defined to ChartsContext.SELECT_CHART',
+                );
+            return {
+                ...state,
+                charts: state.charts.map(chart =>
+                    chart.id === action.chartId
+                        ? {
+                              ...chart,
+                              exercises: chart.exercises.map(exercise =>
+                                  exercise.id == action.exerciseId
+                                      ? action.exercise
+                                      : exercise,
+                              ),
+                          }
+                        : chart,
+                ) as Chart[],
+            };
         case ActionsType.SELECT_CHART:
-            if (!action.chartId)
+            if (action.chartId === undefined)
                 throw Error(
                     'chartId must be defined to ChartsContext.SELECT_CHART',
                 );
@@ -101,18 +123,12 @@ const chartsReducer = (state: ChartsState, action: Action) => {
 const initialState: ChartsState = {
     charts: [
         {
-            id: 'Nova ficha',
-            exercises: [
-                {
-                    id: 'Novo exercício',
-                    pr: 0,
-                    reps: 0,
-                    series: 0,
-                },
-            ],
+            name: 'Nova ficha',
+            id: 0,
+            exercises: [],
         },
     ],
-    selected: 'Nova ficha',
+    selected: 0,
 };
 
 export const ChartsProvider = ({ children }: { children: React.ReactNode }) => {
@@ -124,14 +140,17 @@ export const ChartsProvider = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
-const getUniqueId = (initialId: string, list?: string[]) => {
-    let newId = initialId;
+const generateNewId = (list: { id: number }[]) =>
+    list.length ? list[list.length - 1].id + 1 : 0;
+
+const getUniqueName = (initialName: string, list?: { name: string }[]) => {
+    let newName = initialName;
     let index = 1;
-    while (!list || list.find(id => id === newId)) {
-        newId = `${initialId}${index}`;
+    while (!list || list.find(({ name }) => name === newName)) {
+        newName = `${initialName}${index}`;
         index++;
     }
-    return newId;
+    return newName;
 };
 
 export const useCharts = () => {
@@ -139,16 +158,16 @@ export const useCharts = () => {
     if (!context) throw Error('ChartsContext is not acessible here');
     const { state, dispatch } = context;
 
-    const charts = useMemo(
-        () => state.charts.map(({ id }) => id),
-        [state.charts],
-    );
-    const currentChart = state.charts.find(({ id }) => id === state.selected);
+    const currentChart = state.charts.find(
+        ({ id }) => id === state.selected,
+    ) as Chart;
 
     const addChart = () => {
-        const newChartId = getUniqueId('Nova ficha', charts);
+        const newChartId = generateNewId(state.charts);
+        const newChartName = getUniqueName('Nova ficha', state.charts);
         const newChart: Chart = {
             id: newChartId,
+            name: newChartName,
             exercises: [] as Exercise[],
         };
         dispatch({
@@ -157,32 +176,34 @@ export const useCharts = () => {
         });
     };
 
-    const removeChart = (chartId: string) => {
+    const removeChart = (chartId: number) => {
         dispatch({
             type: ActionsType.REMOVE_CHART,
             chartId,
         });
     };
 
-    const addExercise = (chartId: string) => {
-        const newExerciseId = getUniqueId(
+    const addExercise = (chartId: number) => {
+        const chart = state.charts.find(({ id }) => id === chartId) as Chart;
+        const newExerciseId = generateNewId(chart.exercises);
+        const newExerciseName = getUniqueName(
             'Novo exercício',
-            currentChart?.exercises.map(({ id }) => id),
+            chart.exercises,
         );
-        const newExercise: Exercise = {
+        const exercise: Exercise = {
             id: newExerciseId,
+            name: newExerciseName,
             series: 0,
             reps: 0,
-            pr: 0,
         };
         dispatch({
             type: ActionsType.ADD_EXERCISE,
             chartId,
-            newExercise,
+            exercise,
         });
     };
 
-    const removeExercise = (chartId: string, exerciseId: string) => {
+    const removeExercise = (chartId: number, exerciseId: number) => {
         dispatch({
             type: ActionsType.REMOVE_EXERCISE,
             chartId,
@@ -190,7 +211,20 @@ export const useCharts = () => {
         });
     };
 
-    const selectChart = (chartId: string) => {
+    const updateExercise = (
+        chartId: number,
+        exerciseId: number,
+        exercise: Exercise,
+    ) => {
+        dispatch({
+            type: ActionsType.UPDATE_EXERCISE,
+            chartId,
+            exerciseId,
+            exercise,
+        });
+    };
+
+    const selectChart = (chartId: number) => {
         dispatch({
             type: ActionsType.SELECT_CHART,
             chartId,
@@ -198,12 +232,13 @@ export const useCharts = () => {
     };
 
     return {
-        charts,
-        currentChart: state.charts.find(({ id }) => id === state.selected),
+        charts: state.charts,
+        currentChart,
         addChart,
         removeChart,
         addExercise,
         removeExercise,
         selectChart,
+        updateExercise,
     };
 };

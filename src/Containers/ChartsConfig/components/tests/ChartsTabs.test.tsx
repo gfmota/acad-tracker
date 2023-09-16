@@ -1,12 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import ChartsTabs from '../ChartsTabs';
 import { useCharts } from '../../context';
+import { CHARTS_MOCK } from './mock';
 
 const addChart = jest.fn();
 const selectChart = jest.fn();
 jest.mock('../../context');
 (useCharts as jest.Mock).mockReturnValue({
-    charts: ['A', 'B', 'C'],
+    charts: CHARTS_MOCK,
     addChart,
     selectChart,
 });
@@ -32,6 +33,6 @@ describe('ChartsTabs', () => {
         render(<ChartsTabs />);
         fireEvent.click(screen.getByText('B'));
 
-        expect(selectChart).toBeCalledWith('B');
+        expect(selectChart).toBeCalledWith(1);
     });
 });

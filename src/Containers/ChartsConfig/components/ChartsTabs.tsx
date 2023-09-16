@@ -5,15 +5,15 @@ const ChartsTabs = () => {
     const { charts, addChart, selectChart, currentChart } = useCharts();
     return (
         <div className={styles.container}>
-            {charts.map(chart => (
+            {charts.map(({ id, name }) => (
                 <button
-                    key={chart}
+                    key={id}
                     className={`${styles.tab} ${
-                        currentChart?.id === chart ? styles.selected : ''
+                        currentChart?.id === id ? styles.selected : ''
                     }`}
-                    onClick={() => selectChart(chart)}
+                    onClick={() => selectChart(id)}
                 >
-                    {chart}
+                    {name}
                 </button>
             ))}
             <button onClick={addChart} className={styles.tab}>
