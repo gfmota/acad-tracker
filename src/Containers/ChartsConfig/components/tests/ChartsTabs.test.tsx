@@ -2,15 +2,16 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ChartsTabs from '../ChartsTabs';
 import { useCharts } from '../../context';
 import { CHARTS_MOCK } from './mock';
+import Tab from '../Tab';
 
 const addChart = jest.fn();
-const selectChart = jest.fn();
 jest.mock('../../context');
 (useCharts as jest.Mock).mockReturnValue({
     charts: CHARTS_MOCK,
     addChart,
-    selectChart,
 });
+jest.mock('../Tab');
+(Tab as jest.Mock).mockImplementation(({ name }) => <div>{name}</div>);
 
 describe('ChartsTabs', () => {
     it('should render the all charts in tabs and add button', () => {
@@ -27,12 +28,5 @@ describe('ChartsTabs', () => {
         fireEvent.click(screen.getByTestId('add-icon'));
 
         expect(addChart).toBeCalled();
-    });
-
-    it('should call selectChart correctly', () => {
-        render(<ChartsTabs />);
-        fireEvent.click(screen.getByText('B'));
-
-        expect(selectChart).toBeCalledWith(1);
     });
 });

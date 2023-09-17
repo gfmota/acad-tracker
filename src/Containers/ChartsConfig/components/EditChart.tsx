@@ -1,7 +1,7 @@
 import AddIcon from '../../../Components/Icons/AddIcon';
 import useEditChart from '../hooks/useEditChart';
 import ExerciseItem from './ExerciseItem';
-import styles from '../../../mixins.module.scss';
+import styles from './styles/EditChart.module.scss';
 
 const EditChart = () => {
     const { exercises, addExerciseToCurrentChart } = useEditChart();
@@ -13,7 +13,7 @@ const EditChart = () => {
                     <ExerciseItem key={exercise.id} exercise={exercise} />
                 ))}
                 <button
-                    className={styles.iconButton}
+                    className={styles.addExerciseButton}
                     onClick={addExerciseToCurrentChart}
                 >
                     <AddIcon size="32" color="#3454b3" />

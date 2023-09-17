@@ -12,6 +12,7 @@ enum ActionsType {
     REMOVE_EXERCISE = 'remove_exercise',
     UPDATE_EXERCISE = 'update_exercise',
     SELECT_CHART = 'select_chart',
+    RENAME_CHART = 'rename_chart',
 }
 interface Action {
     type: ActionsType;
@@ -19,6 +20,7 @@ interface Action {
     exerciseId?: number;
     newChart?: Chart;
     exercise?: Exercise;
+    name?: string;
 }
 
 const ChartsContext = React.createContext<
@@ -116,6 +118,21 @@ const chartsReducer = (state: ChartsState, action: Action) => {
             return {
                 ...state,
                 selected: action.chartId,
+            };
+        case ActionsType.RENAME_CHART:
+            if (action.chartId === undefined || !action.name)
+                throw Error(
+                    'chartId and name must be defined to ChartsContext.SELECT_CHART',
+                );
+            if (!state.charts.find(({ id }) => id === action.chartId))
+                throw Error('chart selected not found');
+            return {
+                ...state,
+                charts: state.charts.map(chart =>
+                    chart.id === action.chartId
+                        ? { ...chart, name: action.name as string }
+                        : chart,
+                ),
             };
     }
 };
@@ -231,6 +248,14 @@ export const useCharts = () => {
         });
     };
 
+    const renameChart = (chartId: number, name: string) => {
+        dispatch({
+            type: ActionsType.RENAME_CHART,
+            chartId,
+            name,
+        });
+    };
+
     return {
         charts: state.charts,
         currentChart,
@@ -240,5 +265,6 @@ export const useCharts = () => {
         removeExercise,
         selectChart,
         updateExercise,
+        renameChart,
     };
 };

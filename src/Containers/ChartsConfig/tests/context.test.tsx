@@ -118,4 +118,17 @@ describe('useCharts', () => {
             },
         ]);
     });
+
+    it('should renameChart correctly', () => {
+        const { result } = renderHook(useCharts, { wrapper });
+        act(() => result.current.renameChart(0, 'A'));
+
+        expect(result.current.charts).toStrictEqual([
+            {
+                id: 0,
+                name: 'A',
+                exercises: [],
+            },
+        ]);
+    });
 });
