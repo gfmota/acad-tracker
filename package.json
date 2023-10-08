@@ -20,7 +20,7 @@
     "scripts": {
         "postinstall": "husky install",
         "start": "react-scripts start",
-        "build": "react-scripts build",
+        "build": "react-scripts build && compress-cra",
         "test": "jest",
         "test:ci": "jest --coverage",
         "lint": "eslint ./src/",
@@ -47,6 +47,7 @@
         ]
     },
     "devDependencies": {
+        "compress-create-react-app": "^1.4.2",
         "eslint": "^8.49.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-prettier": "latest",
@@ -56,5 +57,10 @@
         "lint-staged": "^14.0.1",
         "prettier": "^3.0.3",
         "ts-jest": "^29.1.1"
+    },
+    "overrides": {
+        "react-scripts": {
+            "typescript": ">= 3.2.1"
+        }
     }
 }

@@ -1,0 +1,7 @@
+{
+    "filetypes": [".js", ".html", ".css"],
+    "directory": "/build",
+    "algorithms": ["br"],
+    "retainUncompressedFiles": true,
+    "asynchronousCompression": true
+}
