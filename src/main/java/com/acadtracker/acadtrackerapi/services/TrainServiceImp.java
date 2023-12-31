@@ -1,12 +1,12 @@
 package com.acadtracker.acadtrackerapi.services;
 
 import com.acadtracker.acadtrackerapi.models.Train;
+import com.acadtracker.acadtrackerapi.models.User;
+import com.acadtracker.acadtrackerapi.models.dto.TrainRequestDto;
 import com.acadtracker.acadtrackerapi.repositories.TrainRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TrainServiceImp implements TrainService {
@@ -14,12 +14,8 @@ public class TrainServiceImp implements TrainService {
     private TrainRepository trainRepository;
 
     @Override
-    public List<Train> getAllTrains() {
-        return trainRepository.findAll();
-    }
-
-    @Override
-    public Train addTrain(Train newTrain) {
+    public Train addUserTrain(TrainRequestDto trainRequestDto, User user) {
+        final var newTrain = new Train(trainRequestDto, user);
         return trainRepository.save(newTrain);
     }
 

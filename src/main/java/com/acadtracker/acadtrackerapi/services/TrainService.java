@@ -1,15 +1,13 @@
 package com.acadtracker.acadtrackerapi.services;
 
 import com.acadtracker.acadtrackerapi.models.Train;
-
-import java.util.List;
+import com.acadtracker.acadtrackerapi.models.User;
+import com.acadtracker.acadtrackerapi.models.dto.TrainRequestDto;
 
 public interface TrainService {
-    public List<Train> getAllTrains();
+    Train addUserTrain(TrainRequestDto trainRequestDto, User user);
 
-    public Train addTrain(Train newTrain);
+    Train renameTrain(String trainId, String newName);
 
-    public Train renameTrain(String trainId, String newName);
-
-    public void deleteTrain(String trainId);
+    void deleteTrain(String trainId);
 }
