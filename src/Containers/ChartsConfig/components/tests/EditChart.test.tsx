@@ -7,26 +7,26 @@ import ExerciseItem from '../ExerciseItem';
 const addExerciseToCurrentChart = jest.fn();
 jest.mock('../../hooks/useEditChart');
 (useEditChart as jest.Mock).mockReturnValue({
-    exercises: EXERCISES_MOCK,
-    addExerciseToCurrentChart,
+  exercises: EXERCISES_MOCK,
+  addExerciseToCurrentChart,
 });
 jest.mock('../ExerciseItem');
 (ExerciseItem as jest.Mock).mockImplementation(({ exercise: { name } }) => (
-    <div>{name}</div>
+  <div>{name}</div>
 ));
 
 describe('EditChart', () => {
-    it('should render the all exercises', () => {
-        render(<EditChart />);
+  it('should render the all exercises', () => {
+    render(<EditChart />);
 
-        expect(screen.getByText('Rosca')).toBeInTheDocument();
-        expect(screen.getByText('Desenvolvimento')).toBeInTheDocument();
-    });
+    expect(screen.getByText('Rosca')).toBeInTheDocument();
+    expect(screen.getByText('Desenvolvimento')).toBeInTheDocument();
+  });
 
-    it('should call addChart correctly', () => {
-        render(<EditChart />);
-        fireEvent.click(screen.getByTestId('add-icon'));
+  it('should call addChart correctly', () => {
+    render(<EditChart />);
+    fireEvent.click(screen.getByTestId('add-icon'));
 
-        expect(addExerciseToCurrentChart).toBeCalled();
-    });
+    expect(addExerciseToCurrentChart).toBeCalled();
+  });
 });

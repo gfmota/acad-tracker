@@ -1,8 +1,8 @@
 @use '../../../../mixins.module.scss' as mixin;
 
 .addExerciseButton {
-    @extend .iconButton;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  @extend .iconButton;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }

@@ -1,12 +1,12 @@
 @mixin hideScrollbar {
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
 }
 
 .iconButton {
-    padding: 8px;
-    background-color: inherit;
-    border: 0;
+  padding: 8px;
+  background-color: inherit;
+  border: 0;
 }

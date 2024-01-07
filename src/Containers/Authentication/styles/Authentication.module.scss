@@ -1,39 +1,39 @@
 body {
-    margin: 16px;
+  margin: 16px;
 }
 
 .statusSelector {
-    display: flex;
-    justify-content: space-evenly;
-    padding: 16px;
-    font-size: 1.2em;
-    color: rgb(128, 128, 128);
-    > div {
-        font-weight: 600;
-        transition: all 0.3s;
-    }
+  display: flex;
+  justify-content: space-evenly;
+  padding: 16px;
+  font-size: 1.2em;
+  color: rgb(128, 128, 128);
+  > div {
+    font-weight: 600;
+    transition: all 0.3s;
+  }
 }
 
 .selected {
-    color: rgb(118, 224, 112);
+  color: rgb(118, 224, 112);
 }
 
 input {
-    width: calc(100% - 20px);
-    padding: 8px;
-    margin-bottom: 8px;
+  width: calc(100% - 20px);
+  padding: 8px;
+  margin-bottom: 8px;
 }
 
 .submit {
-    background-color: inherit;
-    font-weight: 600;
-    border: 2px solid rgb(118, 224, 112);
-    color: rgb(118, 224, 112);
-    width: 100%;
-    padding: 8px;
-    font-size: 1.2em;
+  background-color: inherit;
+  font-weight: 600;
+  border: 2px solid rgb(118, 224, 112);
+  color: rgb(118, 224, 112);
+  width: 100%;
+  padding: 8px;
+  font-size: 1.2em;
 }
 
 .errorMessage {
-    color: red;
+  color: red;
 }

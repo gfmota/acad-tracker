@@ -1,20 +1,20 @@
 @use '../../../../mixins.module.scss';
 
 .exercise {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-    border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid black;
 
-    > .exerciseId {
-        font-size: 1.2em;
-    }
+  > .exerciseId {
+    font-size: 1.2em;
+  }
 }
 
 .series_reps {
-    display: flex;
-    input {
-        width: 48px;
-    }
+  display: flex;
+  input {
+    width: 48px;
+  }
 }
