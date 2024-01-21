@@ -4,6 +4,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LoadingProvider } from './Components/Loading';
+import { AuthenticationProvider } from './Containers/Authentication';
+import './globals.scss';
 
 const queryClient = new QueryClient();
 
@@ -14,7 +16,9 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <LoadingProvider>
-        <App />
+        <AuthenticationProvider>
+          <App />
+        </AuthenticationProvider>
       </LoadingProvider>
     </QueryClientProvider>
   </React.StrictMode>,
