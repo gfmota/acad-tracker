@@ -1,5 +1,6 @@
 import Authentication from './Containers/Authentication';
-import ChartsConfig from './Containers/ChartsConfig';
+
+import './globals.scss';
 
 const App = () => {
   return <Authentication />;
