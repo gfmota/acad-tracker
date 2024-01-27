@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Table(name = "train")
 @Entity
 @Data
@@ -16,6 +19,10 @@ public class Train {
     private String id;
 
     private String name;
+
+    @OneToMany(mappedBy = "train", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("train")
+    private List<Exercise> exercises = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")

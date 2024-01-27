@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/train")
 public class TrainController {
@@ -28,7 +29,7 @@ public class TrainController {
     private TrainMapper trainMapper;
 
     @GetMapping("")
-    public ResponseEntity<List<TrainResponseDto>> getTrains(User user) {
+    public ResponseEntity<List<TrainResponseDto>> getTrains() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         final var trains = userService.getUserTrains((User) authentication.getPrincipal());
         final var trainsDto = trains.stream().map(train -> trainMapper.toResponseDto(train)).toList();

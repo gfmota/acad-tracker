@@ -3,17 +3,16 @@ package com.acadtracker.acadtrackerapi.controllers;
 import com.acadtracker.acadtrackerapi.infra.security.TokenService;
 import com.acadtracker.acadtrackerapi.models.User;
 import com.acadtracker.acadtrackerapi.models.dto.AuthenticationDto;
+import com.acadtracker.acadtrackerapi.models.dto.TokenDto;
 import com.acadtracker.acadtrackerapi.services.AuthenticationService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.naming.InvalidNameException;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -24,10 +23,10 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @NonNull AuthenticationDto body) {
+    public ResponseEntity<TokenDto> login(@RequestBody @NonNull AuthenticationDto body) {
         final var auth = authenticationService.getAuthentication(body);
         final var token = tokenService.generateToken((User) auth.getPrincipal());
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new TokenDto(token));
     }
 
     @PostMapping("/register")
