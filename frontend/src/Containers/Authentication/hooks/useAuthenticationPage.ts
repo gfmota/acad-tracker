@@ -3,14 +3,12 @@ import { AutheticationStatus } from '../types';
 import { useSignUp } from '../../../Services/useSignUp';
 import { useLogin } from '../../../Services/useLogin';
 import { useLoading } from '../../../Components/Loading';
-import { useAuthentication } from '..';
 
-const useAuthenticationPage = () => {
+const useAuthenticationPage = (setToken: (token: string) => void) => {
   const [authenticationStatus, setAuthenticationStatus] =
     useState<AutheticationStatus>(AutheticationStatus.LOGIN);
   const [errorMessage, setErrorMessage] = useState<string>();
   const { setIsLoading } = useLoading();
-  const { setToken } = useAuthentication();
 
   const [usernameInput, setUsernameInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
@@ -74,6 +72,7 @@ const useAuthenticationPage = () => {
     setUsernameInput('');
     setPasswordInput('');
     setPasswordConfirmationInput('');
+    setErrorMessage('');
   }, []);
 
   return {

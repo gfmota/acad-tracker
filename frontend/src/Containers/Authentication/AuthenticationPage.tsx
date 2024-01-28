@@ -1,7 +1,12 @@
+import TextInput from '../../Components/TextInput';
 import useAuthenticationPage from './hooks/useAuthenticationPage';
 import styles from './styles/Authentication.module.scss';
 
-const AuthenticationPage = () => {
+interface AuthenticationPageProps {
+  setToken: (token: string) => void;
+}
+
+const AuthenticationPage = ({ setToken }: AuthenticationPageProps) => {
   const {
     isLogin,
     onLoginClick,
@@ -14,7 +19,7 @@ const AuthenticationPage = () => {
     setPasswordInput,
     passwordConfirmationInput,
     setPasswordConfirmationInput,
-  } = useAuthenticationPage();
+  } = useAuthenticationPage(setToken);
 
   return (
     <div className={styles.container}>
@@ -26,33 +31,24 @@ const AuthenticationPage = () => {
           Sign up
         </div>
       </div>
-      <div>
-        <label htmlFor="username">Username</label>
-        <input
-          name="username"
-          value={usernameInput}
-          onChange={e => setUsernameInput(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
-          name="password"
-          type="password"
-          value={passwordInput}
-          onChange={e => setPasswordInput(e.target.value)}
-        />
-      </div>
+      <TextInput
+        value={usernameInput}
+        setValue={setUsernameInput}
+        label="Username"
+      />
+      <TextInput
+        value={passwordInput}
+        setValue={setPasswordInput}
+        label="Password"
+        isPassword
+      />
       {!isLogin && (
-        <div>
-          <label htmlFor="passwordConfirmation">Confirm your password</label>
-          <input
-            name="passwordConfirmation"
-            type="password"
-            value={passwordConfirmationInput}
-            onChange={e => setPasswordConfirmationInput(e.target.value)}
-          />
-        </div>
+        <TextInput
+          value={passwordConfirmationInput}
+          setValue={setPasswordConfirmationInput}
+          label="Confirm your password"
+          isPassword
+        />
       )}
       {errorMessage && (
         <div className={styles.errorMessage}>{errorMessage}</div>
